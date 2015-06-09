@@ -11,20 +11,21 @@ songs = [
 ] # thank god this is not a hash...
 
 def run(songs) # I thought we were supposed to call this bit 'runner'?
-  puts "Please enter a command:"
-  puts "Help, List, Play, or Exit"
+  puts "Welcome to my Jukebox!\n\n Please enter a command:\n\n Help, List, Play, or Exit\n\n"
+  help
   command = gets.strip.to_s
-  if command == "help"
-    help
-  elsif command == "list"
-    list(songs)
-  elsif command == "play"
-    play(songs) # runs play songs method
-  elsif command == "exit"
-    exit_jukebox
-  else
-    puts "Erroneous Command"
-    exit_jukebox
+  case command # I originally used if-else
+    when "help"
+      help
+    when "list"
+      list(songs)
+    when "play"
+      play(songs) # runs play songs method
+    when "exit" # or use unless
+      exit_jukebox
+   # else
+   # puts "Erroneous Command"
+   # exit_jukebox
   end
 end
 
@@ -38,11 +39,9 @@ end
 
 # output songs with index
 def list(songs)
-  songs.each_with_index {|song, i| puts "#{i+1}. #{song}"}
+  songs.each_with_index {|song, i| puts "#{i+1}. #{song}"} #or start each_with_index with counting at 1
 end
 
-def play(songs)
-  # output song titles with their numbers
   # ask user for the number it wants
   # puts "Here are songs available:"
   # puts list
@@ -50,18 +49,22 @@ def play(songs)
   # this is actually a classic case of the code passing the test, but not working
   # it will blow up is input is some other string....
   # the way to go is to do if choice.class = Fixnum and if choice.class = String
+def play(songs)
+  puts "What song would you like to play?"
   choice = gets.strip #gets will make it a string
-  if songs.include?(choice) 
+  if songs.include?(choice)  #this would be better if we regex'ed it for presence of the first word because people are usually too lazy to type everything
     puts choice
   else
     if choice.to_i > songs.size || choice.to_i < 0
-      puts "Invalid input, please try again!" # output from the prompt
+      puts "Invalid input, please try again!" 
     else
       puts "Playing #{songs[choice.to_i-1]}"
     end
   end
     puts choice
 end
+
+# if number puts songs[songnumber-1]
 
 def exit_jukebox
   puts "Goodbye!"
